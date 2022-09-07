@@ -117,7 +117,7 @@ exports.likeSauce = (req, res, next) => {
       .catch((error) => res.status(500).json({ error }));
   }
   // 3. User changes his mind
-  // 3.1. user is taking back his like :
+  // 3.1. user is taking backend his like :
   else {
     Sauce.findOne({ _id: sauceId })
       .then((sauce) => {
