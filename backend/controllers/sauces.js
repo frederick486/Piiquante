@@ -1,6 +1,7 @@
 const Sauce = require("../models/sauce");
 const fs = require("fs");
 
+// affichage de toutes les sauces
 exports.getAllSauces = (req, res, next) => {
   Sauce.find()
     .then((sauces) => {
@@ -13,6 +14,7 @@ exports.getAllSauces = (req, res, next) => {
     });
 };
 
+// création d'une sauce
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
   delete sauceObject._id;
@@ -32,7 +34,7 @@ exports.createSauce = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-//user id getting ONE sauce
+//affichage d'une sauce que l'utilisateur sélectionne
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({
     _id: req.params.id,
@@ -47,7 +49,7 @@ exports.getOneSauce = (req, res, next) => {
     });
 };
 
-// User is updating a sauce he created
+// modification d'une de ses sauces par l'utilisateur
 exports.modifySauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id }).then((sauce) => {
     const filename = sauce.imageUrl.split("/images/")[1];
@@ -70,7 +72,7 @@ exports.modifySauce = (req, res, next) => {
   });
 };
 
-// User is deleting one of his sauces
+// suppression d'une de ses sauces par l'utilisateur
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
@@ -84,12 +86,12 @@ exports.deleteSauce = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-// User is liking / disliking a sauce
+// liking / disliking d'une sauce 
 exports.likeSauce = (req, res, next) => {
   const sauceId = req.params.id;
   const userId = req.body.userId;
   const like = req.body.like;
-  // 1. user likes a sauce for the first time (like === 1)
+  // 1. l'utilisateur likes une sauce pour la première fois (like === 1)
   // pushing the userId to usersLiked array; incrementing likes
   if (like === 1) {
     Sauce.updateOne(
@@ -103,7 +105,7 @@ exports.likeSauce = (req, res, next) => {
       .catch((error) => res.status(500).json({ error }));
   }
 
-  // 2. user DISlikes a sauce for the first time (like === -1)
+  // 2. l'utilisateur DISlikes une sauce pour la première fois (like === -1)
   // pushing the userId to usersLiked array; one less like.
   else if (like === -1) {
     Sauce.updateOne(
@@ -116,7 +118,7 @@ exports.likeSauce = (req, res, next) => {
       .then((sauce) => res.status(200).json({ message: "Sauce dépréciée" }))
       .catch((error) => res.status(500).json({ error }));
   }
-  // 3. User changes his mind
+  // 3. l'utilisateur change d'avis
   // 3.1. user is taking backend his like :
   else {
     Sauce.findOne({ _id: sauceId })
@@ -130,7 +132,7 @@ exports.likeSauce = (req, res, next) => {
               res.status(200).json({ message: "Sauce dépréciée" });
             })
             .catch((error) => res.status(500).json({ error }));
-          // 3.2 user is changing his mind on his dislike
+          // 3.2 l'utilisateur change d'avis sur son dislike
         } else if (sauce.usersDisliked.includes(userId)) {
           Sauce.updateOne(
             { _id: sauceId },
