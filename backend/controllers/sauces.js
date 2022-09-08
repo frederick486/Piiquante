@@ -1,17 +1,11 @@
 const Sauce = require("../models/sauce");
 const fs = require("fs");
 
-// affichage de toutes les sauces
+// Récupération de toutes les sauces
 exports.getAllSauces = (req, res, next) => {
   Sauce.find()
-    .then((sauces) => {
-      res.status(200).json(sauces);
-    })
-    .catch((error) => {
-      res.status(400).json({
-        error: error,
-      });
-    });
+    .then(sauces => res.status(200).json(sauces))
+    .catch(error => res.status(400).json({ error: error }))
 };
 
 // création d'une sauce
