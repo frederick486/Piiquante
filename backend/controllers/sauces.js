@@ -18,14 +18,11 @@ exports.createSauce = (req, res, next) => {
     dislikes: 0,
     usersDisliked: [],
     usersLiked: [],
-    imageUrl: `${req.protocol}://${req.get("host")}/images/${
-      req.file.filename
-    }`,
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${ req.file.filename }`,
   });
-  sauce
-    .save()
+  sauce.save()
     .then(() => res.status(201).json({ message: "Sauce enregistré !" }))
-    .catch((error) => res.status(400).json({ error }));
+    .catch((error) => res.status(400).json({ error }))
 };
 
 //affichage d'une sauce que l'utilisateur sélectionne
