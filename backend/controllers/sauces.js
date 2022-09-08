@@ -55,7 +55,7 @@ exports.modifySauce = (req, res, next) => {
 // suppression d'une de ses sauces par l'utilisateur
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
-    .then((sauce) => {
+    .then(sauce => {
       const filename = sauce.imageUrl.split("/images/")[1];
       fs.unlink(`images/${filename}`, () => {
         Sauce.deleteOne({ _id: req.params.id })
@@ -63,7 +63,7 @@ exports.deleteSauce = (req, res, next) => {
           .catch((error) => res.status(400).json({ error }));
       });
     })
-    .catch((error) => res.status(500).json({ error }));
+    .catch(error => res.status(500).json({ error }));
 };
 
 // liking / disliking d'une sauce 
