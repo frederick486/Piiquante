@@ -8,6 +8,15 @@ exports.getAllSauces = (req, res, next) => {
     .catch(error => res.status(400).json({ error: error }))
 };
 
+
+//récupération d'une sauce que l'utilisateur sélectionne
+exports.getOneSauce = (req, res, next) => {
+  Sauce.findOne({ _id: req.params.id })
+    .then(sauce => res.status(200).json(sauce))
+    .catch(error => res.status(404).json({ error: error }))
+};
+
+
 // création d'une sauce
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
@@ -25,20 +34,6 @@ exports.createSauce = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }))
 };
 
-//affichage d'une sauce que l'utilisateur sélectionne
-exports.getOneSauce = (req, res, next) => {
-  Sauce.findOne({
-    _id: req.params.id,
-  })
-    .then((sauce) => {
-      res.status(200).json(sauce);
-    })
-    .catch((error) => {
-      res.status(404).json({
-        error: error,
-      });
-    });
-};
 
 // modification d'une de ses sauces par l'utilisateur
 exports.modifySauce = (req, res, next) => {
