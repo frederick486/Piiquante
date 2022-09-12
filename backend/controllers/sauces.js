@@ -52,6 +52,7 @@ exports.modifySauce = (req, res, next) => {
   });
 };
 
+
 // suppression d'une de ses sauces par l'utilisateur
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
@@ -65,6 +66,7 @@ exports.deleteSauce = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ error }));
 };
+
 
 // liking / disliking d'une sauce 
 exports.likeSauce = (req, res, next) => {
