@@ -1,21 +1,10 @@
 const bcrypt = require('bcrypt');
-
 const jwt = require('jsonwebtoken');
-
 const User = require('../models/Users');
 
-// function chechPassword (req, res) {
-//     if(req.body.password.length < 6) {
-//         res.status(400)
-//         throw new Error('Le mot de passe doit contenir au moins 6 caractères')
-//     }
-// }
-
-exports.signup = (req, res, next) => {
-    
+exports.signup = (req, res, next) => {  
     if(req.body.password.length < 6) {
         res.status(400).json( {message: 'le password doit contenir au moins 6 caractères'} );
-        // throw new Error('Le mot de passe doit contenir au moins 6 caractères')
     } else {
         bcrypt.hash(req.body.password, 10)
             .then(hash => {
@@ -29,7 +18,6 @@ exports.signup = (req, res, next) => {
             })
             .catch(error => res.status(500).json({ error }));
     }
-
 };
 
 exports.login = (req, res, next) => {

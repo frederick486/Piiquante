@@ -1,24 +1,14 @@
-require('dotenv').config()
 const express = require('express')
-// const cors = require("cors")
 const app = express()
-const saucesRoutes = require("./routes/sauces");
-
 const path = require('path');
-
-// Mongo
-const mongoose = require("./services/db");
-
-// Routes
+const bodyParser = require("body-parser");
+const saucesRoutes = require("./routes/sauces");
 const userRoutes = require('./routes/user');
 
-const bodyParser = require("body-parser");
+require('dotenv').config()
+require("./services/db");
 
 app.use(bodyParser.json());
-
-// middleware
-// app.use(cors())
-
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -28,7 +18,6 @@ app.use((req, res, next) => {
   // res.setHeader('Content-Security-Policy', "default-src 'self'")
   next();
 });
-
 
 app.use("/api/sauces", saucesRoutes);
 app.use('/api/auth', userRoutes);

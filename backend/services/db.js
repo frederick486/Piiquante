@@ -1,4 +1,4 @@
-// Mongo
+// Connection à MongoDB
 const mongoose = require("mongoose");
 const password = process.env.PASSWORD;
 const login = process.env.LOGIN;
