@@ -13,7 +13,7 @@ exports.getAllSauces = (req, res, next) => {
 };
 
 
-//récupération d'une sauce que l'utilisateur sélectionne
+//récupération d'une sauce sélectionnée par utilisateur
 exports.getOneSauce = (req, res, next) => {
   //Utilisation de la méthode findOne() du modèle Mongoose qui renvoit la Sauce ayant le même _id que le paramètre de la requête
   Sauce.findOne({ _id: req.params.id })
@@ -46,24 +46,7 @@ exports.createSauce = (req, res, next) => {
 };
 
 
-// modification d'une de ses sauces par l'utilisateur
-// exports.modifySauce = (req, res, next) => {
-//   Sauce.findOne({ _id: req.params.id }).then((sauce) => {
-//     const filename = sauce.imageUrl.split("/images/")[1];
-//     fs.unlink(`images/${filename}`, () => {
-//       const sauceObject = req.file ? 
-//           {
-//             ...JSON.parse(req.body.sauce),
-//             imageUrl: `${req.protocol}://${req.get("host")}/images/${ req.file.filename }`,
-//           } : { ...req.body };
-//       Sauce.updateOne( { _id: req.params.id }, { ...sauceObject, _id: req.params.id } )
-//         .then(() => res.status(200).json({ message: "Sauce modifiée !" }))
-//         .catch(error => res.status(400).json({ error }));
-//     });
-//   });
-// };
-
-
+// modification sauce par utilisateur propriétaire
 exports.modifySauce = (req, res, next) => {
   const sauceObject = req.file ? {
       ...JSON.parse(req.body.sauce),
@@ -76,7 +59,7 @@ exports.modifySauce = (req, res, next) => {
           if (sauce.userId != req.auth.userId) {
               res.status(403).json({ message : 'unauthorized request'});
           } else {
-            Sauce.updateOne({ _id: req.params.id}, { ...sauceObject, _id: req.params.id})
+              Sauce.updateOne({ _id: req.params.id}, { ...sauceObject, _id: req.params.id})
               .then(() => res.status(200).json({message : 'Sauce modifiée !'}))
               .catch(error => res.status(401).json({ error }));
           }
@@ -86,26 +69,7 @@ exports.modifySauce = (req, res, next) => {
       });
 };
 
-
-// suppression d'une de ses sauces par l'utilisateur
-// exports.deleteSauce = (req, res, next) => {
-//   //Utilisation de la méthode findOne() du modèle Mongoose qui renvoit la Sauce ayant le même _id que le paramètre de la requête
-//   Sauce.findOne({ _id: req.params.id })
-//     .then(sauce => {
-//       //Séparation du nom du fichier grâce au "/images/"" contenu dans l'url
-//       const filename = sauce.imageUrl.split("/images/")[1];
-//       //Utilisation de la fonction unlink pour supprimer l'image et suppression de toute la Sauce
-//       fs.unlink(`images/${filename}`, () => {
-//         Sauce.deleteOne({ _id: req.params.id })
-//           .then(() => res.status(200).json({ message: "Sauce supprimée !" }))
-//           .catch((error) => res.status(400).json({ error }));
-//       });
-//     })
-//     .catch(error => res.status(500).json({ error }));
-// };
-
-
-
+// Suppression sauce par utilisateur propriétaire
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id})
       .then(sauce => {
